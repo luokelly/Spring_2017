@@ -10,12 +10,11 @@ public class TextExcel
 
 	public static void main(String[] args)
 	{
-		String command = "";
-		do{
-			command = processCommand();
-			System.out.println(command);
+		Spreadsheet textExcel = new Spreadsheet();
+		Scanner input = new Scanner(System.in);
+		String command = input.next();
+		while(command.equals( "quit")){
+			System.out.println(processCommand(command));
 		}
-		while(command != "quit");
-	    // Add your command loop here
 	}
 }
