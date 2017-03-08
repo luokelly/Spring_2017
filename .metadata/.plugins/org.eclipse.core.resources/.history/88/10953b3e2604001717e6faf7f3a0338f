@@ -13,8 +13,8 @@ public class TextExcel
 		Spreadsheet textExcel = new Spreadsheet();
 		Scanner input = new Scanner(System.in);
 		String command = input.next();
-		while(!command.equals( "quit")){
-			System.out.println(textExcel.processCommand(command));
+		while(command.equals( "quit")){
+			System.out.println(processCommand(command));
 		}
 	}
 }

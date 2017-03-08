@@ -5,8 +5,8 @@ package textExcel;
 public class SpreadsheetLocation implements Location
 {
     
-	private int rows;
-	private int cols;
+	private int rows = 20;
+	private int cols = 12;
 
     public int getRow()
     {
@@ -22,8 +22,8 @@ public class SpreadsheetLocation implements Location
     
     public SpreadsheetLocation(String cellName)
     {
-    	rows = Integer.parseInt(cellName.substring(1));
-    	cols = cellName.charAt(0) - 'A';
+    	int rows = Integer.parseInt(cellName.substring(1));
+    	int cols = cellName.charAt(0) - 'A';
    
     }
 

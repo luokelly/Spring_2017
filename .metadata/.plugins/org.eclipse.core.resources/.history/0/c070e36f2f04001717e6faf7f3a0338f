@@ -19,15 +19,8 @@ public class Spreadsheet implements Grid
 	}
 	public String processCommand(String command)
 	{
-		//return value of cell
-		//assign string and return String of entire sheet grid
-		//clear entire sheet and return entire sheet grid
-		//clear a written cell and return entire sheet grid
 		
 		return command;
-	}
-	public String cellInspection(String command){
-		
 	}
 
 	@Override
@@ -52,7 +45,7 @@ public class Spreadsheet implements Grid
 	@Override
 	public String getGridText()
 	{
-		// return entire sheet grid
+		// TODO Auto-generated method stub
 		return null;
 	}
 
