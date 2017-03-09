@@ -52,6 +52,7 @@ public class Spreadsheet implements Grid
 	@Override
 	public String getGridText()
 	{
+		String header = "";
 		// return entire sheet grid
 		return null;
 	}
