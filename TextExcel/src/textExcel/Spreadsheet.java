@@ -19,15 +19,23 @@ public class Spreadsheet implements Grid
 	}
 	public String processCommand(String command)
 	{
-		//return value of cell
+		if(command.equals("")){ //return value of cell
+			return command;
+		}
+		
+		if(command.toUpperCase().equals("CLEAR")){ //clear entire sheet and return entire sheet grid
+			for(int i = 0; i < cells.length; i++){
+				for(int j = 0; j<cells[i].length; j++){
+					cells[i][j] = new EmptyCell();
+				}
+				return this.getGridText();
+			}
+		}
 		//assign string and return String of entire sheet grid
-		//clear entire sheet and return entire sheet grid
+		
 		//clear a written cell and return entire sheet grid
 		
 		return command;
-	}
-	public String cellInspection(String command){
-		
 	}
 
 	@Override
@@ -46,15 +54,29 @@ public class Spreadsheet implements Grid
 	public Cell getCell(Location loc)
 	{
 		// TODO Auto-generated method stub
-		return null;
+		return cells[loc.getRow()][loc.getCol()];
 	}
 
 	@Override
-	public String getGridText()
+	public String getGridText() // return entire sheet grid
 	{
-		String header = "";
-		// return entire sheet grid
-		return null;
+		String header = "   ";
+		for (char i = 'A'; i <= 'L'; i++){
+			header += "|" + i + "         ";	
+		}
+		header += "|";
+		
+		String whole = "\n";
+		
+		for (int j = 0; j < this.getRows(); j++ ){
+			whole += ((j+1) + "   ").substring(0, 3);
+			whole += "|";
+			for (int k = 0; k < this.getCols(); k++){
+				whole += cells[k][j].abbreviatedCellText() + "|";
+			}			
+			whole += "\n";
+		}
+		return header + whole;
 	}
 
 }
