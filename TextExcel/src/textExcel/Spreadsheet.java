@@ -31,9 +31,13 @@ public class Spreadsheet implements Grid
 				return this.getGridText();
 			}
 		}
+		
+		if(command.toUpperCase().length() > 2){
+			
+		}
 		//assign string and return String of entire sheet grid
 		
-		//clear a written cell and return entire sheet grid
+		if(command)//clear a written cell and return entire sheet grid
 		
 		return command;
 	}
