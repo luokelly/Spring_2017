@@ -16,6 +16,7 @@ public class Spreadsheet implements Grid
 				
 			}
 		}
+		System.out.print(this.getGridText());
 	}
 	public String processCommand(String command)
 	{
@@ -32,12 +33,15 @@ public class Spreadsheet implements Grid
 			}
 		}
 		
-		if(command.toUpperCase().length() > 2){
+		if(command.contains("=")){
+			command.getCol();
 			
 		}
 		//assign string and return String of entire sheet grid
 		
-		if(command)//clear a written cell and return entire sheet grid
+		if(command.length() > 5 && command.contains("clear")){
+			
+		}//clear a written cell and return entire sheet grid
 		
 		return command;
 	}
@@ -76,7 +80,7 @@ public class Spreadsheet implements Grid
 			whole += ((j+1) + "   ").substring(0, 3);
 			whole += "|";
 			for (int k = 0; k < this.getCols(); k++){
-				whole += cells[k][j].abbreviatedCellText() + "|";
+				whole += cells[j][k].abbreviatedCellText() + "|";
 			}			
 			whole += "\n";
 		}
