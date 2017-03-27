@@ -34,24 +34,13 @@ public class Spreadsheet implements Grid
 		}
 		
 		if(command.contains("=")){
-			String[] str = command.split(" "); //split command
-			String first = str[3];
-			int colNum = command.charAt(0) - 'A';
-			if(str[1].length() > 2){
-				cells[colNum][rowNum] = first;
-			}else{
-				int rowNum = command.charAt(1);
-			}
-			
-			
-			
+			command.getCol();
 			
 		}
 		//assign string and return String of entire sheet grid
 		
 		if(command.length() > 5 && command.contains("clear")){
-			int colNum = command.charAt(0) - 'A';
-			int rowNum
+			
 		}//clear a written cell and return entire sheet grid
 		
 		return command;
