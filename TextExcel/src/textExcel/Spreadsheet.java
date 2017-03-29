@@ -21,6 +21,7 @@ public class Spreadsheet implements Grid
 	public String processCommand(String command)
 	{
 		String[] commandArr = command.split(" ", 3);
+		
 		if(command.equals("")){ //return value of cell
 			return command;
 		}
@@ -32,40 +33,37 @@ public class Spreadsheet implements Grid
 				}
 				return this.getGridText();
 			}
-		
 			
-			
-			
-		} else if (commandArr.length > 1) { //if more than one input and:
-		if (commandArr[1].equals("=")) { //has an equal sign then it is an equality
-			SpreadsheetLocation gridLoc = new SpreadsheetLocation(commandArr[0]);
-			int rowNum = gridLoc.getRow();
-			int colNum = gridLoc.getCol();
+		}
+		if (commandArr[1].equals("=")) { 
+			assignCell(command);
+			return getGridText();
 			
 		//assign string and return String of entire sheet grid
 		}
-		if (commandArr[0].toLowerCase().equals("clear")){ 
-			for (int i = 1; i < commandArr.length; i++) {
-				SpreadsheetLocation gridLoc = new SpreadsheetLocation(commandArr[i]);
-				int rowNum = gridLoc.getRow();
-				int colNum = gridLoc.getCol();
-				cells[colNum][gridLoc.getRow()] = new EmptyCell();
+		if(command.length() < 2){
+			SpreadsheetLocation location = new SpreadsheetLocation(commandArr[0]);
+			cells[location.getRow()][location.getCol()] = new EmptyCell();
+			return getGridText();
+			
+		}
+		if (commandArr[0].toUpperCase().equals("CLEAR ")){ 
+			SpreadsheetLocation location = new SpreadsheetLocation(commandArr[0]);
+			cells[location.getRow()][location.getCol()] = new EmptyCell();
 			return getGridText();
 			}
-		}
-		else if (commandArr.length > 2){ 
-			
-			return getGridText();
-		}
-		else { //run the getCell method to inspect cell
-			SpreadsheetLocation placeholder = new SpreadsheetLocation(commandArr[0].toUpperCase());
-			return getCell(placeholder).fullCellText();
-		}
+		return getGridText();
 		}//clear a written cell and return entire sheet grid
-		
-		return command;
-	}
 
+	public void assignCell(String command)
+	{
+		String[] splitArr = command.split("=", 2);
+		String locationArr = splitArr[0];
+		String commandArr = splitArr[1];
+		if(command.length() > 2){
+			System.out.print(commandArr += "=" + locationArr);
+		}
+	}
 	@Override
 	public int getRows()
 	{
