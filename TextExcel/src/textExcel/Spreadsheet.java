@@ -21,13 +21,21 @@ public class Spreadsheet implements Grid
 		System.out.print(this.getGridText());
 	}
 	public String processCommand(String command)
+<<<<<<< HEAD
 	{	
 		if (command.length()==0){ //if no command, catches 
 			return "";
+=======
+	{
+		String[] commandArr = command.split(" ", 3);
+		if(command.equals("")){ //return value of cell
+			return command;
+>>>>>>> parent of cddd147... Checkpoint 2
 		}
 
 		String [] input = command.split(" ",3); //divide up command input into an array
 		
+<<<<<<< HEAD
 		if (!(command.indexOf("save")<0)){ //save the spreadsheet
 			System.out.println("saved to: " + input[1]);
 			return saveSpreadsheet(input[1]);
@@ -47,11 +55,55 @@ public class Spreadsheet implements Grid
 		else { //run the getCell method to inspect cell
 			SpreadsheetLocation placeholder = new SpreadsheetLocation(input[0].toUpperCase());
 			return getCell(placeholder).fullCellText();
+=======
+		if(command.toUpperCase().equals("CLEAR")){ //clear entire sheet and return entire sheet grid
+			for(int i = 0; i < cells.length; i++){
+				for(int j = 0; j<cells[i].length; j++){
+					cells[i][j] = new EmptyCell();
+				}
+				return this.getGridText();
+			}
+		
+			
+			
+			
+		} else if (commandArr.length > 1) { //if more than one input and:
+		if (commandArr[1].equals("=")) { //has an equal sign then it is an equality
+			SpreadsheetLocation gridLoc = new SpreadsheetLocation(commandArr[0]);
+			int rowNum = gridLoc.getRow();
+			int colNum = gridLoc.getCol();
+			
+		//assign string and return String of entire sheet grid
 		}
+		if (commandArr[0].toLowerCase().equals("clear")){ 
+			for (int i = 1; i < commandArr.length; i++) {
+				SpreadsheetLocation gridLoc = new SpreadsheetLocation(commandArr[i]);
+				int rowNum = gridLoc.getRow();
+				int colNum = gridLoc.getCol();
+				cells[colNum][gridLoc.getRow()] = new EmptyCell();
+			return getGridText();
+			}
+		}
+		else if (commandArr.length > 2){ 
+			
+			return getGridText();
+>>>>>>> parent of cddd147... Checkpoint 2
+		}
+		else { //run the getCell method to inspect cell
+			SpreadsheetLocation placeholder = new SpreadsheetLocation(commandArr[0].toUpperCase());
+			return getCell(placeholder).fullCellText();
+		}
+		}//clear a written cell and return entire sheet grid
+		
+		return command;
 	}
+<<<<<<< HEAD
 	
 
 	
+=======
+
+>>>>>>> parent of cddd147... Checkpoint 2
 	@Override
 	public int getRows()
 	{

@@ -1,5 +1,9 @@
 PROBLEMS_FILTERS_MIGRATE=true
 eclipse.preferences.version=1
+<<<<<<< HEAD
 platformState=1490909952930
+=======
+platformState=1490756908267
+>>>>>>> parent of cddd147... Checkpoint 2
 quickStart=false
 tipsAndTricks=true
