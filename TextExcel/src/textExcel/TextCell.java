@@ -1,24 +1,23 @@
+
 package textExcel;
 
 public class TextCell implements Cell {
 	
-	private String text;
+	private String words;
 	
-	public TextCell (String input){
-		this.text = input;
+	public TextCell (String words){ //initial input
+		this.words = words;
 	}
 	@Override
 	public String abbreviatedCellText() {
-		// TODO Auto-generated method stub
-		String abrv = text;
+		String abrv = words;
 		abrv += "          ";
-		return abrv.substring(0,10);
+		return abrv.substring(0,10); //pad, then format to 10 char
 	}
 
 	@Override
 	public String fullCellText() {
-		// TODO Auto-generated method stub
-		return "\"" + text + "\"";
+		return "\"" + words + "\"";
 	}
 
 }
