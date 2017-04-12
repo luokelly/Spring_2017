@@ -3,7 +3,7 @@ package textExcel;
 
 public class TextCell implements Cell {
 	
-	private String words;
+private String words;
 	
 	public TextCell (String words){ //initial input
 		this.words = words;
@@ -19,5 +19,4 @@ public class TextCell implements Cell {
 	public String fullCellText() {
 		return "\"" + words + "\"";
 	}
-
 }

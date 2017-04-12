@@ -21,5 +21,4 @@ public class RealCell implements Cell {
 	public double getDoubleValue(String words){
 		return Double.parseDouble(words); //super method
 	}
-
 }

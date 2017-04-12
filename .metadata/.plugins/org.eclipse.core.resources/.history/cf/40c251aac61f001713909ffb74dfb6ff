@@ -2,61 +2,63 @@ package textExcel;
 import java.util.*;
 import java.io.*;
 
-
+// Update this file with your own code.
 
 public class Spreadsheet implements Grid
 {
-	private Cell[][] cells; //2d array of cell objects
+	//create array of Cell objects called textexcell
+	private Cell [] [] textexcell;
 
-	public Spreadsheet () { //create spreadsheet
-		cells = new Cell [12] [20];
-		for (int i = 0; i < 12; i++){ //for loop all empty cells
+	//Spreadsheet Constructor
+	public Spreadsheet () {
+		textexcell = new Cell [12] [20];
+		for (int i = 0; i < 12; i++){
 			for (int j = 0; j< 20; j++){
-				cells[i][j] = new EmptyCell(); 
+				textexcell [i][j] = new EmptyCell(); //initializes with all empty cells
 			}
 		}
 	}
 	@Override
 	public String processCommand(String command)
 	{	
-		if (command.length() == 0){ //check if there is command
+		if (command.length()==0){ //if no command, catches 
 			return "";
 		}
 
-		String [] input = command.split(" ",3); //split array into 3 parts
-		String cell = input[0]; //index 0 is cell
+		String [] input = command.split(" ",3); //divide up command input into an array
+		String cell = input[0];
 		
-		if (!(command.indexOf("save") < 0)){ //test to save spread sheet
+		if (!(command.indexOf("save")<0)){ //save the spreadsheet
 			System.out.println("saved to: " + input[1]);
 			return saveSpreadsheet(input[1]);
 		}
-		if (!(command.indexOf("open") < 0)){ //test to open spreadsheet
+		if (!(command.indexOf("open")<0)){ //open up the spreadsheet
 			System.out.println("opened from: " + input[1]);
 			return openSpreadsheet(input[1]); 
 		}
-		if (input[0].toLowerCase().equals("clear")){ //if command has clear, clear cell
+		if (input[0].toLowerCase().equals("clear")){ //run the clearCell method
 			clearCell(input);
 			return getGridText();
 		}
-		else if (input.length > 2){ //assign value to cell
+		else if (input.length > 2){ //run the setCell method to assign value
 		
-			setCell(input); //call setCell
+			setCell(input);
 			return getGridText();
 		}
-		else { 
+		else { //run the getCell method to inspect cell
 			SpreadsheetLocation placeholder = new SpreadsheetLocation(input[0].toUpperCase());
-			return getCell(placeholder).fullCellText(); //check cell using getCell
+			return getCell(placeholder).fullCellText();
 		}
 	}
 
 	@Override
-	public int getRows() //set number of rows
+	public int getRows() //number of rows in array
 	{
 		return 20;
 	}
 
 	@Override
-	public int getCols() //set number of columns
+	public int getCols() //number of columns in array
 	{
 		return 12;
 	}
@@ -64,60 +66,60 @@ public class Spreadsheet implements Grid
 	@Override
 	public Cell getCell(Location loc)
 	{	
-		return cells[loc.getCol()] [loc.getRow()]; //get location
+		return textexcell [loc.getCol()] [loc.getRow()]; //uses location interface to get the coordinates of the cell
 	}
 
 	@Override
-	public String getGridText() //entire textexcel
+	public String getGridText() //formats the spreadsheet and prints
 	{		
-		String toptext = "   "; //prints the top of textexcel
+		String toptext = "   "; //prints the header
 		for (char c = 'A'; c <= 'L';c++){
 			toptext += "|" + c + "         ";	
 		}
 		toptext += "|";
 		
-		String fulltext = "\n";	
+		String fulltext = "\n";	//prints the cells	
 		for (int j = 0; j < 20; j++ ){
 			fulltext += ((j+1) + "   ").substring(0, 3);
 			fulltext += "|";
-			for (int k = 0; k < 12; k++){ //for loop to fill each cell
-				fulltext += cells[k][j].abbreviatedCellText() + "|"; 
+			for (int k = 0; k < 12; k++){
+				fulltext += textexcell[k][j].abbreviatedCellText() + "|"; //puts the 10 char cell text into each grid box
 			}			
 			fulltext += "\n";
 		}
-		return toptext+fulltext; //returns entire gridText
+		return toptext+fulltext; //returns full spreadsheet
 	}
 	
 	public void clearCell (String [] input){
-		if (input.length > 1){ //if length of command is greater than 1, clear entire sheet
+		if (input.length > 1){ //if "clear" all
 			SpreadsheetLocation placeholder = new SpreadsheetLocation(input[1].toUpperCase());
-			cells[placeholder.getCol()] [placeholder.getRow()] = new EmptyCell (); 
+			textexcell [placeholder.getCol()] [placeholder.getRow()] = new EmptyCell (); //make everything an empty cell
 		}
 		else {
-			for (int j = 0; j < 20; j++ ){ //loop through entire sheet to empty specific cell
+			for (int j = 0; j < 20; j++ ){
 				for (int k = 0; k < 12; k++){
-					cells[k][j] = new EmptyCell(); 
+					textexcell[k][j] = new EmptyCell(); //target the specific cell to empty
 				}			
 			}
 		}
 	}
 	
-	public void setCell (String [] input){ //insert value into cell
+	public void setCell (String [] input){ //assign the cell a value
 		
 		String testInput = input[2]; 
 		SpreadsheetLocation placeholder = new SpreadsheetLocation(input[0].toUpperCase());
-		if (testInput.charAt(0) == 34){ //take string in between quotes and assign cell
+		if (testInput.charAt(0) == 34){ //if a text cell, take the string between the quotes and fill the array element with a text cell
 			String words = input[2].substring(1, (input[2].length()-1));
-			cells[placeholder.getCol()] [placeholder.getRow()] = new TextCell (words);
+			textexcell [placeholder.getCol()] [placeholder.getRow()] = new TextCell (words);
 		}
-		else if (testInput.substring(testInput.length()-1).equals("%")){ //if cell contains a percentage
-			cells[placeholder.getCol()] [placeholder.getRow()] = new PercentCell (testInput);	
+		else if (testInput.substring(testInput.length()-1).equals("%")){ //if a percent cell
+			textexcell [placeholder.getCol()] [placeholder.getRow()] = new PercentCell (testInput);	
 		}
-		else if (testInput.substring(testInput.length()-1).equals(")")){ //if cell contains a formula
-			cells[placeholder.getCol()] [placeholder.getRow()] = new FormulaCell (testInput, cells);	
+		else if (testInput.substring(testInput.length()-1).equals(")")){ //if a formula cell
+			textexcell [placeholder.getCol()] [placeholder.getRow()] = new FormulaCell (testInput, textexcell);	
 		}
-		else { // if cell is a value
-			cells[placeholder.getCol()] [placeholder.getRow()] = new ValueCell (testInput);	
+		else { // if a value cell
+			textexcell [placeholder.getCol()] [placeholder.getRow()] = new ValueCell (testInput);	
 		}
 	}
 	
@@ -133,9 +135,9 @@ public class Spreadsheet implements Grid
 	     }
 	     for (int j = 0; j < 20; j++){  	 
 	    	 for (int k = 0; k < 12; k++){
-	    		 if (!(cells[k][j] instanceof EmptyCell)){ //checks to make sure only cells with data are saved.		 
-	    			 outputFile.println((char)(k+65) + "" + (j+1) + "," + 
-	    			 cells[k][j].getClass().getSimpleName() + ","+ cells[k][j].fullCellText());
+	    		 if (!(textexcell[k][j] instanceof EmptyCell)){ //checks to make sure only cells with data are saved.		 
+	    			 outputFile.println((char)(k+65) + "" + (j+1) + "," + textexcell[k][j].getClass().getSimpleName() + ","+ textexcell[k][j].fullCellText());
+	    			 //prints the cell to the output file in the format Location,Type,Full Value
 	    		 }
 			 }	 
 	     }

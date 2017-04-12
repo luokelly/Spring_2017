@@ -5,26 +5,26 @@ package textExcel;
 public class SpreadsheetLocation implements Location
 {
     
-	private int rows;
-	private int cols;
-
+	char column;
+	int row;
+	
+    @Override
     public int getRow()
     {
-        return rows-1;
+        return row-1; //account for zero-indexing for array
     }
 
     @Override
     public int getCol()
     {
-        
-        return cols;
+        // TODO Auto-generated method stub
+        return column - 65; //take the char value and convert to array index
     }
     
-    public SpreadsheetLocation(String cellName)
+    public SpreadsheetLocation(String cellName) //parses string location into array index
     {
-    	rows = Integer.parseInt(cellName.substring(1));
-    	cols = cellName.charAt(0) - 'A';
-   
+    	column = cellName.charAt(0);
+    	row = Integer.parseInt(cellName.substring(1));
     }
 
 }

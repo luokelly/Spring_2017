@@ -4,10 +4,12 @@ package textExcel;
 public class FormulaCell extends RealCell implements Cell {
 	
 	private String words;
+	private Cell [] [] textexcell;
 	
-	public FormulaCell (String words){ //not functional yet
+	public FormulaCell (String words, Cell [] [] textexcell){ //not functional yet
 		super (words);
 		this.words = words;
+		this.textexcell = textexcell;
 		
 	}
 	
@@ -32,9 +34,9 @@ public class FormulaCell extends RealCell implements Cell {
 		int i = 0;
 		for (int j = 0; j <= formulaParts.length;j++){
 			if (isCell(formulaParts[j])){
-				SpreadsheetLocation placeholder = new SpreadsheetLocation(formulaParts[j].toUpperCase());
+				SpreadsheetLocation loc = new SpreadsheetLocation(formulaParts[j].toUpperCase());
 				
-				formulaParts [j] = Spreadsheet.getCell(placeholder).getFullText;
+				formulaParts [j] = ((RealCell) textexcell [loc.getCol()] [loc.getRow()]).fullCellText();
 			}
 		}
 		String finalAnswer = formulaParts [i+1];
