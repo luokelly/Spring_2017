@@ -1,30 +1,23 @@
 package textExcel;
 
-//Update this file with your own code.
+//This class sets up location from spreadsheet
 
 public class SpreadsheetLocation implements Location
 {
-    
-	char column;
 	int row;
-	
-    @Override
-    public int getRow()
-    {
-        return row-1; //account for zero-indexing for array
+	char col;
+
+    public int getRow(){
+        return row - 1; //zero indexing so -1
     }
 
-    @Override
-    public int getCol()
-    {
-        // TODO Auto-generated method stub
-        return column - 65; //take the char value and convert to array index
+    public int getCol(){
+        return col - 65; //char value
     }
     
-    public SpreadsheetLocation(String cellName) //parses string location into array index
-    {
-    	column = cellName.charAt(0);
-    	row = Integer.parseInt(cellName.substring(1));
+    public SpreadsheetLocation(String input){
+    	row = Integer.parseInt(input.substring(1)); //takes part of array that includes location
+    	col = input.charAt(0);
     }
 
 }

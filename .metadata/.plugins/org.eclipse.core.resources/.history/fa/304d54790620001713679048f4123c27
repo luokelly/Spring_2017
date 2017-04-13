@@ -1,0 +1,34 @@
+package textExcel;
+
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+//This class includes the scanner and main method 
+
+public class TextExcel
+{
+
+	public static void main(String[] args) //main method
+	{	
+	    Scanner scanner = new Scanner (System.in); //create a new scanner
+	    String scannerInput = scanner.nextLine(); //declare and initialize input
+	    
+	    Spreadsheet spreadsheet = new Spreadsheet(); //create new spreadsheet
+	    System.out.print(spreadsheet);
+	    while (!scannerInput.equalsIgnoreCase("quit")) { //stop when input = quit
+	    	try {
+	    		System.out.println(spreadsheet.processCommand(scannerInput)); //must have something in input
+	    	}
+	    	
+	    	catch (IndexOutOfBoundsException i) {
+	    		System.err.println("IndexOutOfBoundsException: enter in a valid cell"); //makes exception if input is invalid
+	    	} 
+	    	
+	    	catch (NumberFormatException i) {
+	    		System.err.println("NumberFormatException: enter in a valid cell or value"); 
+	    	} 
+	    	
+	    	scannerInput = scanner.nextLine(); //calls next input
+	    }
+	}
+}

@@ -1,0 +1,192 @@
+package textExcel;
+import java.util.*;
+import java.io.*;
+
+//This class creates a spreadsheet and calls methods to carry out operations.
+
+public class Spreadsheet implements Grid
+{
+	private Cell[][] cells; //2d array of cell objects
+
+	public Spreadsheet () { //create spreadsheet
+		cells = new Cell [12] [20];
+		for (int i = 0; i < 12; i++){ //for loop all empty cells
+			for (int j = 0; j < 20; j++){
+				cells[i][j] = new EmptyCell(); 
+			}
+		}
+	}
+	
+	
+	public String processCommand(String command)
+	{	
+		if (command.length() == 0){ //check if there is command
+			return "";
+		}
+
+		String [] input = command.split(" ", 3); //split array into 3 parts
+		String cell = input[0]; //index 0 is cell
+		
+		if (!(command.indexOf("save") < 0)){ //test to save spread sheet
+			System.out.println("Saved to: " + input[1]);
+			return saveSpreadsheet(input[1]);
+		}
+		
+		if (!(command.indexOf("open") < 0)){ //test to open spreadsheet
+			System.out.println("Opened from: " + input[1]);
+			return openSpreadsheet(input[1]); 
+		}
+		
+		if (input[0].toUpperCase().equals("CLEAR")){ //if command has clear, clear cell
+			clearCell(input);
+			return getGridText();
+		}
+		
+		else if (input.length > 2){ //assign value to cell
+		
+			setCell(input); //call setCell
+			return getGridText();
+		}
+		
+		else { 
+			SpreadsheetLocation temp = new SpreadsheetLocation(input[0].toUpperCase());
+			return getCell(temp).fullCellText(); //check cell using getCell
+		}
+	}
+
+
+	public Cell getCell(Location place)
+	{	
+		return cells[place.getCol()][place.getRow()]; //get location
+	}
+
+	
+
+	public void setCell (String[] input){ //insert value into cell
+		
+		String operator = input[2]; 
+		
+		SpreadsheetLocation temp = new SpreadsheetLocation(input[0].toUpperCase());
+		
+		if (operator.charAt(0) == 34){ //take string in between quotes and assign cell
+			String words = input[2].substring(1, (input[2].length() - 1));
+			cells[temp.getCol()][temp.getRow()] = new TextCell(words);
+			
+		}
+		
+		else if (operator.substring(operator.length() - 1).equals("%")){ //if cell contains a percentage
+			cells[temp.getCol()][temp.getRow()] = new PercentCell(operator);	
+			
+		}
+		
+		else if (operator.substring(operator.length() - 1).equals(")")){ //if cell contains a formula
+			cells[temp.getCol()][temp.getRow()] = new FormulaCell(operator, cells);	
+			
+		}
+		
+		else { // if cell is a value
+			cells[temp.getCol()][temp.getRow()] = new ValueCell(operator);	
+		}
+	}
+	
+	public void clearCell(String [] input){
+		
+		if (input.length > 1){ //if length of command is greater than 1, clear entire sheet
+			SpreadsheetLocation temp = new SpreadsheetLocation(input[1].toUpperCase());
+			cells[temp.getCol()] [temp.getRow()] = new EmptyCell (); 
+		}
+		
+		else {
+			for (int i = 0; i < 20; i++){ //loop through entire sheet to empty specific cell
+				for (int j = 0; j < 12; j++){
+					cells[j][i] = new EmptyCell(); 
+				}			
+			}
+		}
+	}
+	
+	
+	@Override
+	public int getRows() //set number of rows
+	{
+		return 20;
+	}
+
+	@Override
+	public int getCols() //set number of columns
+	{
+		return 12;
+	}
+
+	public String saveSpreadsheet(String fileInput){ //saves gridText
+		
+	     PrintStream file;
+	     try {
+	    	 file = new PrintStream(new File(fileInput));  //create new file          
+	     }
+	     
+	     catch (FileNotFoundException i) {   	 
+	            return "File not found: " + fileInput;   //throw exception if file doesn't exist
+	     }
+	     
+	     for (int j = 0; j < 20; j++){  	 //loop through each cell to save ones with input
+	    	 for (int k = 0; k < 12; k++){
+	    		 if (!(cells[k][j] instanceof EmptyCell)){  
+	    			 file.println((char)(k+65) + "" + (j+1) + "," + 
+	    			 cells[k][j].getClass().getSimpleName() + ","+ cells[k][j].fullCellText());
+	    		 }
+			 }	 
+	     }
+	     file.close(); //close file
+		 return "";
+	}
+	
+	private String openSpreadsheet(String fileInput) { //open spreadsheet
+		
+	     Scanner file;
+	     
+	     try {
+	            file = new Scanner(new File(fileInput)); //open file 
+	     }
+	     
+	     catch (FileNotFoundException i) {
+	            return "File not found: " + fileInput; //throws exception for nonexistent file
+	     }
+	     
+	     while (file.hasNextLine()) { //loops through line by line
+	    	 
+             String [] data = file.nextLine().split("," , 3); //split input into 3 parts
+             
+             if (data[1].equals("PercentCell")){ //if it is a percentage, parse input
+            	 String percentage = "" + (Double.parseDouble(data[2])*100);
+            	 data[2] = (percentage)+"%";
+             }
+             
+             setCell(data); //call setCell to put new inputs into cells  
+         }
+	     
+	     file.close(); //close file
+	     return getGridText(); //return spreadsheet
+	}
+
+	public String getGridText() //entire textexcel
+	{		
+		String header = "   "; //prints the top of textexcel
+		for (char c = 'A'; c <= 'L';c++){
+			header += "|" + c + "         ";	
+		}
+		header += "|";
+	
+		String whole = "\n";	
+		
+		for (int i = 0; i < 20; i++ ){
+			whole += ((i+1) + "   ").substring(0, 3);
+			whole += "|";
+			for (int j = 0; j < 12; j++){ //for loop to fill each cell
+				whole += cells[j][i].abbreviatedCellText() + "|"; 
+			}			
+			whole += "\n";
+		}
+		return header + whole; //returns entire gridText
+	}
+}

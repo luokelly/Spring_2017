@@ -1,22 +1,26 @@
-
 package textExcel;
 
+//This class takes in an input of text and returns full or shortened text
 public class TextCell implements Cell {
 	
-private String words;
+private String text;
 	
-	public TextCell (String words){ //initial input
-		this.words = words;
+	public TextCell (String input){ 
+		this.text = input; //set text to input
+		
 	}
-	@Override
-	public String abbreviatedCellText() {
-		String abrv = words;
-		abrv += "          ";
-		return abrv.substring(0,10); //pad, then format to 10 char
+	
+	public String fullCellText(){
+		
+		return "\"" + text + "\"";
+		
 	}
-
-	@Override
-	public String fullCellText() {
-		return "\"" + words + "\"";
+	
+	public String abbreviatedCellText(){
+		
+		String shorten = text;
+		shorten += "          "; //10 spaces
+		return shorten.substring(0,10); //returns only 10 char
+		
 	}
 }

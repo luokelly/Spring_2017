@@ -1,34 +1,37 @@
 package textExcel;
 
+//This class inherits value and pads the input of value cells or returns full entire content
 public class ValueCell extends RealCell implements Cell {
 	
-	private String words;
+	private String text;
 	
-	public ValueCell (String words){ //input value
-		super (words);
-		this.words = words;
+	public ValueCell(String text){ //input value
+		super(text);
+		this.text = text;
 	}
 	
-	@Override
+	public double GetValue (String input){
+		
+		return super.getDoubleValue(input); //inherit input
+		
+	}
+	
 	public String abbreviatedCellText() {
 
-		String abrv = GetValue(words)+"";
-		abrv += "          ";
-		return abrv.substring(0,10); //pad and then substring to fit
+		String shorten = GetValue(text)+"";
+		shorten += "          ";
+		return shorten.substring(0,10); //abbreviated and then pad to 10
 		
 	}
 
-	@Override
 	public String fullCellText() {
 	
-		if (words.indexOf(".")<0){ //deals with added extraneous 0.0 when casting integer to double
-			return words;
+		if (text.indexOf(".") < 0){ //gets rid of extra 0.0
+			return text;
 		}
-		return GetValue(words)+"";
+		return GetValue(text) + "";
 	}
 	
-	public double GetValue (String words){
-		return super.getDoubleValue(words); //uses super method to get double value
-	}
+
 
 }

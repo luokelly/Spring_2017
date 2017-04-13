@@ -1,0 +1,24 @@
+package textExcel;
+
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+//This class includes the scanner and main method for TextExcel
+
+public class TextExcel
+{
+
+	public static void main(String[] args) //main method
+	{	
+		Spreadsheet spreadsheet = new Spreadsheet(); //create new spreadsheet
+		
+	    Scanner scanner = new Scanner(System.in); //create a new scanner
+	    String scannerInput = scanner.nextLine(); //declare and initialize input
+	    
+	    System.out.println(spreadsheet.processCommand(scannerInput));
+	    while (!scannerInput.equalsIgnoreCase("quit")) { //stop when input = quit
+	    	System.out.println(spreadsheet.processCommand(scannerInput)); //must have something in input
+	    	scannerInput = scanner.nextLine(); //calls next input
+	    }
+	}
+}
